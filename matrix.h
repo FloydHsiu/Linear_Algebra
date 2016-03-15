@@ -42,10 +42,11 @@ public:
 	friend Matrix operator*(double constant, Matrix &mtx);
 	//complex
 	std::vector<Matrix> LU() throw (MatrixException);
-	Matrix gauss();
 	Matrix inverse();
-	double Det_UsingRecursiveAndVector();
-	double Det_UsingRecursiveAndArray();
+	Matrix gauss();
+	double Det_Gauss();
+	double Det_RecursiveAndVector();
+	double Det_RecursiveAndArray();
 
 private:
 	int RowIndex;

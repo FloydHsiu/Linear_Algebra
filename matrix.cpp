@@ -209,7 +209,6 @@ Matrix Matrix::gauss()
 	std::vector<std::vector<double> >tmp;
 	tmp.assign(this->data.begin(), this->data.end());
 	int n = this->RowIndex;
-	int swap_time = 0;
 	for (int i = 0; i < n; i++) {
 		// Search for maximum in this column
 		double maxEl = abs(tmp[i][i]);
@@ -220,8 +219,6 @@ Matrix Matrix::gauss()
 				maxRow = k;
 			}
 		}
-
-		if (maxRow != i) swap_time++;
 
 		// Swap maximum row with current row (column by column)
 		for (int k = i; k < n; k++) {
@@ -246,13 +243,55 @@ Matrix Matrix::gauss()
 	return Matrix(n, n ,tmp);
 }
 
-double Matrix::Det_UsingRecursiveAndVector()
+double Matrix::Det_Gauss()
+{
+	std::vector<std::vector<double> >tmp;
+	tmp.assign(this->data.begin(), this->data.end());
+	int n = this->RowIndex;
+	int swap_time = 0;
+	for (int i = 0; i < n; i++) {
+		// Search for maximum in this column
+		double maxEl = abs(tmp[i][i]);
+		int maxRow = i;
+		for (int k = i + 1; k<n; k++) {
+			if (abs(tmp[k][i]) > maxEl) {
+				maxEl = abs(tmp[k][i]);
+				maxRow = k;
+			}
+		}
+
+		if (maxRow != i) swap_time++;
+
+		// Swap maximum row with current row (column by column)
+		for (int k = i; k < n; k++) {
+			double temp = tmp[maxRow][k];
+			tmp[maxRow][k] = tmp[i][k];
+			tmp[i][k] = temp;
+		}
+
+		// Make all rows below this one 0 in current column
+		for (int k = i + 1; k < n; k++) {
+			double c = -tmp[k][i] / tmp[i][i];
+			for (int j = i; j < n; j++) {
+				if (i == j) {
+					tmp[k][j] = 0;
+				}
+				else {
+					tmp[k][j] += c * tmp[i][j];
+				}
+			}
+		}
+	}
+	return pow(-1, swap_time) * Matrix(n, n, tmp).multiDiagonal();
+}
+
+double Matrix::Det_RecursiveAndVector()
 {
 	double result  = Matrix::DetRecursive(*this);
 	return result;
 }
 
-double Matrix::Det_UsingRecursiveAndArray()
+double Matrix::Det_RecursiveAndArray()
 {
 	int m = this->RowIndex;
 	int n = this->ColumnIndex;

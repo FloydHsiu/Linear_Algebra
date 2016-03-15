@@ -10,7 +10,7 @@
 
 int main() {
 	DataManager dataManager;
-	dataManager.SetFileName("C:/Users/Floyd/Documents/Visual Studio 2015/Projects/Project1/TestData/Matrix/m6.txt");
+	dataManager.SetFileName("C:/Users/Floyd/Documents/Visual Studio 2015/Projects/Project1/TestData/Matrix/M7.txt");
 	//dataManager.SetFileName("/Users/Floyd/Downloads/project1/TestData/Matrix");
 	dataManager.LoadData();
 	int m = 0;
@@ -19,9 +19,10 @@ int main() {
 		tmp = tmp.reduceRowColumn(0, 0);
 	}
 	tmp.show();
-	std::cout << tmp.gauss().multiDiagonal() << std::endl;
-	std::cout << dataManager.GetMatrix(0).gauss().multiDiagonal() << std::endl;
-	std::cout << dataManager.GetMatrix(2).gauss().multiDiagonal() << std::endl;
+	std::cout << tmp.Det_Gauss() << std::endl;
+	std::cout << dataManager.GetMatrix(0).Det_Gauss() << std::endl;
+	std::cout << dataManager.GetMatrix(2).Det_Gauss() << std::endl;
+	std::cout << dataManager.GetMatrix(1).Det_RecursiveAndArray() << std::endl;
 	//std::cout << dataManager.GetMatrix(3).determinant() << std::endl;
 	//std::cout << dataManager.GetMatrix(1).get_m();
 }
