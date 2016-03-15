@@ -1,0 +1,4 @@
+*.out
+/Debug
+/Release
+/x64
