@@ -15,20 +15,7 @@ Matrix::Matrix(int m, int n, std::vector<std::vector<double> > mtx_data)
 }
 
 Matrix::~Matrix() {
-	//this->data.clear();
-}
 
-void Matrix::setData_a(int m, int n, double **mtx_data)
-{
-	this->data_a = new double*[m];
-	for (int i = 0; i < m; i++) {
-		this->data_a = new double *[n];
-	}
-	for (int i = 0; i < m; i++) {
-		for (int j = 0; j < n; j++) {
-			this->data_a[i][j] = mtx_data[i][j];
-		}
-	}
 }
 
 int Matrix::get_RowIndex() 
@@ -125,6 +112,8 @@ Matrix Matrix::operator*(double constant)
 	}
 	return Matrix(this->RowIndex, this->ColumnIndex, temp);
 }
+
+//complex
 
 std::vector<Matrix> Matrix::LU() throw (MatrixException)
 {

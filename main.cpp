@@ -24,15 +24,4 @@ int main() {
 	std::cout << dataManager.GetMatrix(2).gauss().multiDiagonal() << std::endl;
 	//std::cout << dataManager.GetMatrix(3).determinant() << std::endl;
 	//std::cout << dataManager.GetMatrix(1).get_m();
-	//dataManager.GetMatrix(2).show();
-	//dataManager.GetMatrix(3).show();
-	/*std::fstream fin;
-	std::string temp;
-	std::string FileName = "C:/Users/Floyd/Documents/Visual Studio 2015/Projects/Project1/TestData/Matrix/m6.txt";
-	//開啟檔案，傳入open函數的參數有兩個，欲開起的檔案名稱，開啟檔案的模式參數(這邊std::ios::in為讀取(輸入)狀態)
-	fin.open(FileName, std::ios::in);
-	for (int i = 0; i < 20; i++) {
-		fin >> temp;
-		std::cout <<i << std::endl <<temp << std::endl;
-	}*/
 }

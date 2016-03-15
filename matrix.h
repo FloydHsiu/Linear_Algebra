@@ -50,9 +50,7 @@ public:
 private:
 	int RowIndex;
 	int ColumnIndex;
-	double **data_a;
 	std::vector<std::vector<double> > data;
-	void setData_a(int m, int n, double **mtx_data);
 	static double determinant_recursive(Matrix &mtx);
 	static double determinant_recursive(int m, int n, double *data);
 };
