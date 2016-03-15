@@ -11,6 +11,7 @@ Matrix::Matrix(int m, int n, std::vector<std::vector<double> > mtx_data)
 {
 	this->RowIndex = m;
 	this->ColumnIndex = n;
+	this->data.clear();
 	this->data.assign(mtx_data.begin(), mtx_data.end());
 }
 
@@ -40,6 +41,7 @@ void Matrix::setData(int m, int n, std::vector<std::vector<double> > mtx_data)
 {
 	this->RowIndex = m;
 	this->ColumnIndex = n;
+	this->data.clear();
 	this->data.assign(mtx_data.begin(), mtx_data.end());
 }
 
@@ -67,6 +69,33 @@ Matrix Matrix::transpose(Matrix mtx)
 		}
 	}
 	return Matrix(_n, _m, temp);
+}
+
+Matrix Matrix::reduceRowColumn(int m, int n) throw (MatrixException)
+{
+	if (!(m >= 0 && n >= 0 && m < this->RowIndex && n < this->ColumnIndex)) throw MatrixException();
+	std::vector<std::vector<double> >tmp(this->RowIndex - 1, std::vector<double>(this->ColumnIndex - 1));
+	int k = 0;
+	for (int i = 0; i < this->RowIndex - 1; i++) {
+		int l = 0;
+		if (m == k) k++;//當執行到要刪除列時，自動+1以跳過該列
+		for (int j = 0; j < this->ColumnIndex - 1; j++) {
+			if (l == n) l++;//當執行到要刪除行時，自動+1以跳過該行
+			tmp[i][j] = this->data[k][l ];
+			l++;//往下一行
+		}
+		k++;//往下一列
+	}
+	return Matrix(this->RowIndex-1, this->ColumnIndex-1, tmp);
+}
+
+double Matrix::multiDiagonal()
+{
+	double result = 1;
+	for (int i = 0; i < this->RowIndex; i++) {
+		result *=this->data[i][i];
+	}
+	return result;
 }
 
 Matrix Matrix::operator+(Matrix &mtx) throw (MatrixException)
@@ -170,46 +199,6 @@ std::vector<Matrix> Matrix::LU() throw (MatrixException)
 	return L_U;
 }
 
-Matrix Matrix::reduce(int m, int n) throw (MatrixException)
-{
-	if (!(m >= 0 && n >= 0 && m < this->RowIndex && n < this->ColumnIndex)) throw MatrixException();
-	std::vector<std::vector<double> >tmp(this->RowIndex - 1, std::vector<double>(this->ColumnIndex - 1));
-	int k = 0;
-	for (int i = 0; i < this->RowIndex - 1; i++) {
-		int l = 0;
-		if (m == k) k++;//當執行到要刪除列時，自動+1以跳過該列
-		for (int j = 0; j < this->ColumnIndex - 1; j++) {
-			if (l == n) l++;//當執行到要刪除行時，自動+1以跳過該行
-			tmp[i][j] = this->data[k][l ];
-			l++;//往下一行
-		}
-		k++;//往下一列
-	}
-	return Matrix(this->RowIndex-1, this->ColumnIndex-1, tmp);
-}
-
-double Matrix::determinant()
-{
-	double result  = Matrix::determinant_recursive(*this);
-	return result;
-}
-
-double Matrix::determinant_A()
-{
-	int m = this->RowIndex;
-	int n = this->ColumnIndex;
-	return determinant_recursive(m, n, StdVectorArrayTransform::parseToArray(m ,n , this->data));
-}
-
-double Matrix::multiDiagonal()
-{
-	double result = 1;
-	for (int i = 0; i < this->RowIndex; i++) {
-		result *=this->data[i][i];
-	}
-	return result;
-}
-
 Matrix Matrix::inverse()
 {
 	return Matrix();
@@ -257,7 +246,20 @@ Matrix Matrix::gauss()
 	return Matrix(n, n ,tmp);
 }
 
-double Matrix::determinant_recursive(Matrix &mtx) 
+double Matrix::Det_UsingRecursiveAndVector()
+{
+	double result  = Matrix::DetRecursive(*this);
+	return result;
+}
+
+double Matrix::Det_UsingRecursiveAndArray()
+{
+	int m = this->RowIndex;
+	int n = this->ColumnIndex;
+	return DetRecursive(m, n, StdVectorArrayTransform::parseToArray(m ,n , this->data));
+}
+
+double Matrix::DetRecursive(Matrix &mtx) 
 {
 	int m = mtx.get_RowIndex(), n = mtx.get_ColumnIndex();
 	double result = 0;
@@ -268,13 +270,13 @@ double Matrix::determinant_recursive(Matrix &mtx)
 	}
 	for (int i = 0; i < m; i++) {
 		//重複取新的matrix的第一列去簡化
-		Matrix tmp = mtx.reduce(0, i);
-		result = result +  mtx.get_data(0,i) * std::pow(-1, i) * Matrix::determinant_recursive(tmp);
+		Matrix tmp = mtx.reduceRowColumn(0, i);
+		result = result +  mtx.get_data(0,i) * std::pow(-1, i) * Matrix::DetRecursive(tmp);
 	}
 	return result;
 }
 
-double Matrix::determinant_recursive(int m, int n, double * data)
+double Matrix::DetRecursive(int m, int n, double * data)
 {
 	double result = 0;
 	if (m == 1 && n == 1) {
@@ -286,7 +288,7 @@ double Matrix::determinant_recursive(int m, int n, double * data)
 	for (int i = 0; i < m; i++) {
 		//重複取新的matrix的第一列去簡化
 		double *tmp = StdVectorArrayTransform::ArrayReduceRowColumn(0, i, m, n, data);
-		result = result +data[i] * std::pow(-1, i) * Matrix::determinant_recursive((m-1), (n-1), tmp);
+		result = result +data[i] * std::pow(-1, i) * Matrix::DetRecursive((m-1), (n-1), tmp);
 	}
 	return result;
 }

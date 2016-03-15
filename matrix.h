@@ -33,6 +33,8 @@ public:
 	void show();
 	//essential
 	static Matrix transpose(Matrix mtx);
+	Matrix reduceRowColumn(int m, int n) throw (MatrixException);//消除某一列行
+	double multiDiagonal();
 	//operator overloading
 	Matrix operator+(Matrix &mtx) throw (MatrixException);
 	Matrix operator*(Matrix &mtx) throw (MatrixException);
@@ -40,17 +42,15 @@ public:
 	friend Matrix operator*(double constant, Matrix &mtx);
 	//complex
 	std::vector<Matrix> LU() throw (MatrixException);
-	Matrix reduce(int m, int n) throw (MatrixException);//消除某一列行
-	double determinant();
-	double determinant_A();
-	double multiDiagonal();
-	Matrix inverse();
 	Matrix gauss();
+	Matrix inverse();
+	double Det_UsingRecursiveAndVector();
+	double Det_UsingRecursiveAndArray();
 
 private:
 	int RowIndex;
 	int ColumnIndex;
 	std::vector<std::vector<double> > data;
-	static double determinant_recursive(Matrix &mtx);
-	static double determinant_recursive(int m, int n, double *data);
+	static double DetRecursive(Matrix &mtx);
+	static double DetRecursive(int m, int n, double *data);
 };

@@ -16,7 +16,7 @@ int main() {
 	int m = 0;
 	Matrix tmp = dataManager.GetMatrix(1);
 	for (int i = 0; i < m; i++) {
-		tmp = tmp.reduce(0, 0);
+		tmp = tmp.reduceRowColumn(0, 0);
 	}
 	tmp.show();
 	std::cout << tmp.gauss().multiDiagonal() << std::endl;
