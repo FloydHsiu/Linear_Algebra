@@ -205,8 +205,10 @@ double Matrix::cofactor(int m, int n)
 	return pow(-1, (m+n))*(tmp.Det_Gauss());
 }
 
-Matrix Matrix::inverse()
+Matrix Matrix::inverse() throw(MatrixException)
 {
+	if (this->RowIndex != this->ColumnIndex) throw MatrixException();
+	if (this->Det_Gauss() == 0) throw MatrixException();
 	std::vector<std::vector<double> > tmp(this->RowIndex, std::vector<double>(this->ColumnIndex));
 	for(int i=0; i<this->RowIndex; i++){
 		for(int j=0; j<this->ColumnIndex; j++){
@@ -214,7 +216,7 @@ Matrix Matrix::inverse()
 		}
 	}
 	Matrix adjoint(this->RowIndex, this->ColumnIndex, tmp);
-	return (adjoint.transpose())*(1/this->Det_Gauss());
+	return (Matrix::transpose(adjoint))*(1/this->Det_Gauss());
 }
 
 Matrix Matrix::gauss()

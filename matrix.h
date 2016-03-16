@@ -43,7 +43,7 @@ public:
 	//complex
 	std::vector<Matrix> LU() throw (MatrixException);
 	double cofactor(int m, int n);
-	Matrix inverse();
+	Matrix inverse() throw(MatrixException);
 	Matrix gauss();//高斯消去法
 	double Det_Gauss();
 	double Det_RecursiveAndVector();
