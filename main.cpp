@@ -10,12 +10,10 @@
 
 int main() {
 	DataManager dataManager;
-	dataManager.SetFileName("C:/Users/Floyd/Documents/Visual Studio 2015/Projects/Project1/TestData/Matrix/M5.txt");
+	dataManager.SetFileName("C:/Users/Floyd/Documents/Visual Studio 2015/Projects/Project1/TestData/Matrix/M8.txt");
 	//dataManager.SetFileName("/Users/Floyd/Downloads/project1/TestData/Matrix");
 	dataManager.LoadData();
-	Matrix::solveLinearEquation(dataManager.GetMatrix(0), dataManager.GetMatrix(1)).show();
-	Matrix::solveLinearEquation(dataManager.GetMatrix(2), dataManager.GetMatrix(3)).show();
-	Matrix::solveLinearEquation(dataManager.GetMatrix(4), dataManager.GetMatrix(5)).show();
+	dataManager.GetMatrix(0).adjoint().show();
 	/*int m = 0;
 	Matrix tmp = dataManager.GetMatrix(1);
 	for (int i = 0; i < m; i++) {
