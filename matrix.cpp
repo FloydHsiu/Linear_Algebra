@@ -89,7 +89,7 @@ Matrix Matrix::reduceRowColumn(int m, int n) throw (MatrixException)
 	return Matrix(this->RowIndex-1, this->ColumnIndex-1, tmp);
 }
 
-double Matrix::multiDiagonal()
+double Matrix::multiDiagonal()//對角線相乘
 {
 	double result = 1;
 	for (int i = 0; i < this->RowIndex; i++) {
@@ -134,7 +134,7 @@ Matrix Matrix::operator*(Matrix &mtx)
 		//check if m and n are the same
 		throw MatrixException();
 	}
-	std::vector<std::vector<double> > temp(this->RowIndex, std::vector<double>(mtx.ColumnIndex));
+	std::vector<std::vector<double> > temp(this->RowIndex, std::vector<double>(mtx.ColumnIndex));//A[m*n] * B[n*o] = C[m*o]
 	for (int i = 0; i < this->RowIndex; i++) {
 		for (int j = 0; j < mtx.ColumnIndex; j++) {
 			temp[i][j] = 0;
@@ -220,7 +220,7 @@ double Matrix::cofactor(int m, int n)
 	return pow(-1, (m+n))*(tmp.Det_Gauss());
 }
 
-Matrix Matrix::adjoint()
+Matrix Matrix::adjoint()//先算矩陣的cofactor矩陣，再做轉置
 {
 	if (this->RowIndex != this->ColumnIndex) throw MatrixException();
 	if (this->Det_Gauss() == 0) throw MatrixException();
@@ -264,7 +264,7 @@ Matrix Matrix::gauss()
 		// Make all rows below this one 0 in current column
 		for (int k = i + 1; k < n; k++) {
 			double c = -tmp[k][i] / tmp[i][i];
-			if (tmp[i][i] == 0) c = 1;
+			if (tmp[i][i] == 0) c = 1;//當此值為0時，因為有取絕對值最大值的關係，tmp[i][i]下面行全為0，所以不須乘以倍率
 			for (int j = i; j < n ; j++) {
 				if (i == j) {
 					tmp[k][j] = 0;
@@ -307,6 +307,7 @@ double Matrix::Det_Gauss()
 		// Make all rows below this one 0 in current column
 		for (int k = i + 1; k < n; k++) {
 			double c = -tmp[k][i] / tmp[i][i];
+			if (tmp[i][i] == 0) c = 1;//當此值為0時，因為有取絕對值最大值的關係，tmp[i][i]下面行全為0，所以不須乘以倍率
 			for (int j = i; j < n; j++) {
 				if (i == j) {
 					tmp[k][j] = 0;
@@ -335,10 +336,10 @@ double Matrix::Det_RecursiveAndArray()
 
 int Matrix::rank()
 {
-	Matrix tmp = this->gauss();
+	Matrix tmp = this->gauss();//先做高斯消去法
 	int counter = 0;
 	for (int i = 0; i < tmp.ColumnIndex; i++) {
-		if (std::abs(tmp.data[i][i]) < 1e-8) counter++;
+		if (std::abs(tmp.data[i][i]) < 1e-8) counter++;//計算pivot為零的個數
 	}
 	return this->ColumnIndex - counter;
 }
