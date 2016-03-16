@@ -134,16 +134,16 @@ Matrix Matrix::operator*(Matrix &mtx)
 		//check if m and n are the same
 		throw MatrixException();
 	}
-	std::vector<std::vector<double> > temp(this->RowIndex, std::vector<double>(this->ColumnIndex));
+	std::vector<std::vector<double> > temp(this->RowIndex, std::vector<double>(mtx.ColumnIndex));
 	for (int i = 0; i < this->RowIndex; i++) {
-		for (int j = 0; j < this->ColumnIndex; j++) {
+		for (int j = 0; j < mtx.ColumnIndex; j++) {
 			temp[i][j] = 0;
 			for (int k = 0; k < this->ColumnIndex; k++) {
 				temp[i][j] += this->data[i][k] * mtx.data[k][j];
 			}
 		}
 	}
-	return Matrix(this->RowIndex, this->ColumnIndex, temp);
+	return Matrix(this->RowIndex, mtx.ColumnIndex, temp);
 }
 
 Matrix Matrix::operator*(double constant)
@@ -337,6 +337,13 @@ int Matrix::rank()
 		if (std::abs(tmp.data[i][i]) < 1e-8) counter++;
 	}
 	return this->ColumnIndex - counter;
+}
+
+Matrix Matrix::solveLinearEquation(Matrix A, Matrix B) throw (MatrixException)// AX = B --> X = inverse(A)*B
+{
+	if (A.ColumnIndex != A.RowIndex || A.RowIndex != B.RowIndex) throw MatrixException();
+	Matrix InverA = A.inverse();
+	return InverA*B;
 }
 
 double Matrix::DetRecursive(Matrix &mtx) 

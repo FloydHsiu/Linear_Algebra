@@ -50,6 +50,7 @@ public:
 	double Det_RecursiveAndVector();
 	double Det_RecursiveAndArray();
 	int rank();
+	static Matrix solveLinearEquation(Matrix A, Matrix B) throw (MatrixException);// AX = B --> X = inverse(A)*B
 
 private:
 	int RowIndex;
