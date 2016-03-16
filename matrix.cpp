@@ -113,6 +113,21 @@ Matrix Matrix::operator+(Matrix &mtx) throw (MatrixException)
 	return Matrix(mtx.RowIndex, mtx.ColumnIndex, temp);
 }
 
+Matrix Matrix::operator-(Matrix & mtx) throw(MatrixException)
+{
+	if (this->RowIndex != mtx.RowIndex || this->ColumnIndex != mtx.ColumnIndex) {
+		//check if m and n are the same
+		throw MatrixException();
+	}
+	std::vector<std::vector<double> > temp(mtx.RowIndex, std::vector<double>(mtx.ColumnIndex));
+	for (int i = 0; i < mtx.RowIndex; i++) {
+		for (int j = 0; j < mtx.ColumnIndex; j++) {
+			temp[i][j] = this->data[i][j] - mtx.data[i][j];
+		}
+	}
+	return Matrix(mtx.RowIndex, mtx.ColumnIndex, temp);
+}
+
 Matrix Matrix::operator*(Matrix &mtx)
 {
 	if (this->ColumnIndex != mtx.RowIndex ) {

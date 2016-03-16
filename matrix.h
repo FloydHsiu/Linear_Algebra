@@ -37,6 +37,7 @@ public:
 	double multiDiagonal();
 	//operator overloading
 	Matrix operator+(Matrix &mtx) throw (MatrixException);
+	Matrix operator-(Matrix &mtx) throw(MatrixException);
 	Matrix operator*(Matrix &mtx) throw (MatrixException);
 	Matrix operator*(double constant);
 	friend Matrix operator*(double constant, Matrix &mtx);
