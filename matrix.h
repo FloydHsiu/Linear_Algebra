@@ -49,6 +49,7 @@ public:
 	double Det_Gauss();
 	double Det_RecursiveAndVector();
 	double Det_RecursiveAndArray();
+	int rank();
 
 private:
 	int RowIndex;

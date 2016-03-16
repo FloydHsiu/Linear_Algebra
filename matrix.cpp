@@ -260,6 +260,7 @@ Matrix Matrix::gauss()
 		// Make all rows below this one 0 in current column
 		for (int k = i + 1; k < n; k++) {
 			double c = -tmp[k][i] / tmp[i][i];
+			if (tmp[i][i] == 0) c = 1;
 			for (int j = i; j < n ; j++) {
 				if (i == j) {
 					tmp[k][j] = 0;
@@ -326,6 +327,16 @@ double Matrix::Det_RecursiveAndArray()
 	int m = this->RowIndex;
 	int n = this->ColumnIndex;
 	return DetRecursive(m, n, StdVectorArrayTransform::parseToArray(m ,n , this->data));
+}
+
+int Matrix::rank()
+{
+	Matrix tmp = this->gauss();
+	int counter = 0;
+	for (int i = 0; i < tmp.ColumnIndex; i++) {
+		if (std::abs(tmp.data[i][i]) < 1e-8) counter++;
+	}
+	return this->ColumnIndex - counter;
 }
 
 double Matrix::DetRecursive(Matrix &mtx) 
