@@ -234,12 +234,12 @@ Matrix Matrix::adjoint() throw(MatrixException)//¥ýºâ¯x°}ªºcofactor¯x°}¡A¦A°µÂà¸
 
 Matrix Matrix::inverse() throw(MatrixException)
 {
-	if (this->Det_Gauss()) throw MatrixException("Matrix::inverse", 'I');
+	if (this->Det_Gauss() == 0) throw MatrixException("Matrix::inverse", 'I');
 	try {
 		return this->adjoint()*(1 / this->Det_Gauss());
 	}
 	catch (MatrixException e) {
-		throw e;
+		throw MatrixException("Matrix::inverse", 'S');
 	}
 }
 
@@ -352,9 +352,17 @@ int Matrix::rank()
 
 Matrix Matrix::solveLinearEquation(Matrix A, Matrix B) throw (MatrixException)// AX = B --> X = inverse(A)*B
 {
-	if (A.ColumnIndex != A.RowIndex || A.RowIndex != B.RowIndex) throw MatrixException("Matrix::solveLinearEquation", '0');
+	if (A.ColumnIndex != A.RowIndex || A.RowIndex != B.RowIndex) throw MatrixException("Matrix::solveLinearEquation", 'M');
 	Matrix InverA = A.inverse();
 	return InverA*B;
+}
+
+Matrix Matrix::LeastSquare(Matrix A, Matrix B) throw(MatrixException)//tanspose(A)AX = tanspose(A)B  --> X = inverse(tansepose(A)A)transpose(A)B 
+{
+	if (A.RowIndex != B.RowIndex) throw MatrixException("Matrix::LeastSquare", 'M');
+	Matrix AtA = Matrix::transpose(A) * A;
+	Matrix inverAtA = AtA.inverse();
+	return inverAtA*Matrix::transpose(A)*B;
 }
 
 double Matrix::DetRecursive(Matrix &mtx) 

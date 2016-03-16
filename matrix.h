@@ -86,6 +86,7 @@ public:
 	double Det_RecursiveAndArray();
 	int rank();
 	static Matrix solveLinearEquation(Matrix A, Matrix B) throw (MatrixException);// AX = B --> X = inverse(A)*B
+	static Matrix LeastSquare(Matrix A, Matrix B) throw (MatrixException);//tanspose(A)AX = tanspose(A)B  --> X = inverse(tansepose(A)A)transpose(A)B 
 
 private:
 	int RowIndex;
