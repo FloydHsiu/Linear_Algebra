@@ -199,9 +199,22 @@ std::vector<Matrix> Matrix::LU() throw (MatrixException)
 	return L_U;
 }
 
+double Matrix::cofactor(int m, int n)
+{
+	Matrix tmp = this->reduceRowColumn(m,n);
+	return pow(-1, (m+n))*(tmp.Det_Gauss());
+}
+
 Matrix Matrix::inverse()
 {
-	return Matrix();
+	std::vector<std::vector<double> > tmp(this->RowIndex, std::vector<double>(this->ColumnIndex));
+	for(int i=0; i<this->RowIndex; i++){
+		for(int j=0; j<this->ColumnIndex; j++){
+			tmp[i][j] = this->cofactor(i, j);
+		}
+	}
+	Matrix adjoint(this->RowIndex, this->ColumnIndex, tmp);
+	return (adjoint.transpose())*(1/this->Det_Gauss());
 }
 
 Matrix Matrix::gauss()
@@ -260,7 +273,7 @@ double Matrix::Det_Gauss()
 			}
 		}
 
-		if (maxRow != i) swap_time++;
+		if (maxRow != i) swap_time++;//每做列交換一次，值就乘以-1
 
 		// Swap maximum row with current row (column by column)
 		for (int k = i; k < n; k++) {

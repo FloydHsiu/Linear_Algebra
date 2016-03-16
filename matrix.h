@@ -42,8 +42,9 @@ public:
 	friend Matrix operator*(double constant, Matrix &mtx);
 	//complex
 	std::vector<Matrix> LU() throw (MatrixException);
+	double cofactor(int m, int n);
 	Matrix inverse();
-	Matrix gauss();
+	Matrix gauss();//高斯消去法
 	double Det_Gauss();
 	double Det_RecursiveAndVector();
 	double Det_RecursiveAndArray();
