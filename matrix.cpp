@@ -32,7 +32,7 @@ int Matrix::get_ColumnIndex()
 double Matrix::get_data(int m, int n) throw (MatrixException)
 {
 	if (m >= this->RowIndex || n >= this->ColumnIndex) {
-		throw MatrixException();
+		throw MatrixException("Matrix::get_data", 'A');
 	}
 	return this->data[m][n];
 }
@@ -73,7 +73,7 @@ Matrix Matrix::transpose(Matrix mtx)
 
 Matrix Matrix::reduceRowColumn(int m, int n) throw (MatrixException)
 {
-	if (!(m >= 0 && n >= 0 && m < this->RowIndex && n < this->ColumnIndex)) throw MatrixException();
+	if (!(m >= 0 && n >= 0 && m < this->RowIndex && n < this->ColumnIndex)) throw MatrixException("Matrix::reduceRowColumn", 'A');
 	std::vector<std::vector<double> >tmp(this->RowIndex - 1, std::vector<double>(this->ColumnIndex - 1));
 	int k = 0;
 	for (int i = 0; i < this->RowIndex - 1; i++) {
@@ -102,7 +102,7 @@ Matrix Matrix::operator+(Matrix &mtx) throw (MatrixException)
 {
 	if (this->RowIndex != mtx.RowIndex || this->ColumnIndex != mtx.ColumnIndex) {
 		//check if m and n are the same
-		throw MatrixException();
+		throw MatrixException("Matrix::operator+", 'D');
 	}
 	std::vector<std::vector<double> > temp(mtx.RowIndex, std::vector<double>(mtx.ColumnIndex));
 	for (int i = 0; i < mtx.RowIndex; i++) {
@@ -117,7 +117,7 @@ Matrix Matrix::operator-(Matrix & mtx) throw(MatrixException)
 {
 	if (this->RowIndex != mtx.RowIndex || this->ColumnIndex != mtx.ColumnIndex) {
 		//check if m and n are the same
-		throw MatrixException();
+		throw MatrixException("Matrix::operator-", 'D');
 	}
 	std::vector<std::vector<double> > temp(mtx.RowIndex, std::vector<double>(mtx.ColumnIndex));
 	for (int i = 0; i < mtx.RowIndex; i++) {
@@ -132,7 +132,7 @@ Matrix Matrix::operator*(Matrix &mtx)
 {
 	if (this->ColumnIndex != mtx.RowIndex ) {
 		//check if m and n are the same
-		throw MatrixException();
+		throw MatrixException("Matrix::operator*", 'M');
 	}
 	std::vector<std::vector<double> > temp(this->RowIndex, std::vector<double>(mtx.ColumnIndex));//A[m*n] * B[n*o] = C[m*o]
 	for (int i = 0; i < this->RowIndex; i++) {
@@ -161,7 +161,7 @@ Matrix Matrix::operator*(double constant)
 
 std::vector<Matrix> Matrix::LU() throw (MatrixException)
 {
-	if (this->RowIndex != this->ColumnIndex) throw MatrixException();
+	if (this->RowIndex != this->ColumnIndex) throw MatrixException("Matrix::LU", 'S');
 	std::vector<std::vector<double> > L (this->RowIndex, std::vector<double>(this->ColumnIndex));
 	std::vector<std::vector<double> > U (this->RowIndex, std::vector<double>(this->ColumnIndex));
 	//Initialize U,L and let diagonal of L be 1
@@ -174,7 +174,7 @@ std::vector<Matrix> Matrix::LU() throw (MatrixException)
 	}
 	//
 	if( this->data[0][0] != 0 ) U[0][0] = this->data[0][0] / L[0][0];
-	else throw MatrixException();
+	else throw MatrixException("Matrix::LU", 'L');
 	//First row of U, first column of L
 	for (int j = 1; j < this->RowIndex; j++) {
 		U[0][j] = this->data[0][j] / L[0][0];
@@ -188,7 +188,7 @@ std::vector<Matrix> Matrix::LU() throw (MatrixException)
 			tmp += L[i][k] * U[k][i];
 		}
 		double a_sub_tmp = this->data[i][i] - tmp;
-		if (std::abs(a_sub_tmp) < 1e-6) throw MatrixException();
+		if (std::abs(a_sub_tmp) < 1e-8) throw MatrixException("Matrix::LU", 'L');
 		else U[i][i] = a_sub_tmp / L[i][i];
 		//
 		for (int j = i + 1; j < this->RowIndex; j++) {
@@ -220,10 +220,9 @@ double Matrix::cofactor(int m, int n)
 	return pow(-1, (m+n))*(tmp.Det_Gauss());
 }
 
-Matrix Matrix::adjoint()//先算矩陣的cofactor矩陣，再做轉置
+Matrix Matrix::adjoint() throw(MatrixException)//先算矩陣的cofactor矩陣，再做轉置
 {
-	if (this->RowIndex != this->ColumnIndex) throw MatrixException();
-	if (this->Det_Gauss() == 0) throw MatrixException();
+	if (this->RowIndex != this->ColumnIndex) throw MatrixException("Matrix::adjoint", 'S');
 	std::vector<std::vector<double> > tmp(this->RowIndex, std::vector<double>(this->ColumnIndex));
 	for (int i = 0; i < this->RowIndex; i++) {
 		for (int j = 0; j < this->ColumnIndex; j++) {
@@ -235,7 +234,13 @@ Matrix Matrix::adjoint()//先算矩陣的cofactor矩陣，再做轉置
 
 Matrix Matrix::inverse() throw(MatrixException)
 {
-	return this->adjoint()*(1/this->Det_Gauss());
+	if (this->Det_Gauss()) throw MatrixException("Matrix::inverse", 'I');
+	try {
+		return this->adjoint()*(1 / this->Det_Gauss());
+	}
+	catch (MatrixException e) {
+		throw e;
+	}
 }
 
 Matrix Matrix::gauss()
@@ -243,6 +248,7 @@ Matrix Matrix::gauss()
 	std::vector<std::vector<double> >tmp;
 	tmp.assign(this->data.begin(), this->data.end());
 	int n = this->RowIndex;
+	//待修正，針對非n*n矩陣
 	for (int i = 0; i < n; i++) {
 		// Search for maximum in this column
 		double maxEl = abs(tmp[i][i]);
@@ -346,7 +352,7 @@ int Matrix::rank()
 
 Matrix Matrix::solveLinearEquation(Matrix A, Matrix B) throw (MatrixException)// AX = B --> X = inverse(A)*B
 {
-	if (A.ColumnIndex != A.RowIndex || A.RowIndex != B.RowIndex) throw MatrixException();
+	if (A.ColumnIndex != A.RowIndex || A.RowIndex != B.RowIndex) throw MatrixException("Matrix::solveLinearEquation", '0');
 	Matrix InverA = A.inverse();
 	return InverA*B;
 }

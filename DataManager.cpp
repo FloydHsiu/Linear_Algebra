@@ -60,8 +60,6 @@ bool DataManager::LoadData()
 			else if (InputType[0] == 'M') {
 				//加入變數名稱清單
 				//VariableNameList[currentLoadVectorID] = "$m" + std::to_string(currentLoadVectorID);
-				//建立足夠數量的Vector
-				//this->Matrixs = std::vector<Matrix>(totalinput);
 				//取得Matrix的row和column
 				fin >> tempString;
 				int m = std::stoi(tempString);

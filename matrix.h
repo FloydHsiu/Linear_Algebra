@@ -4,6 +4,7 @@
 #include <sstream>
 #include <cmath>
 #include <exception>
+#include <string>
 #include "StdVectorArrayTransform.h"
 
 class MatrixException
@@ -12,12 +13,45 @@ public:
 	MatrixException() {
 		this->msg = "Error";
 	};
+	MatrixException(std::string department, char type) {
+		this->department = department;
+		switch (type) {
+		case 'A'://A
+		case 'a':
+			this->msg = "Access Matrix position is out of range.";
+			break;
+		case 'D'://D
+		case 'd':
+			this->msg = "Two different size Matrix error.";
+			break;
+		case 'M'://M
+		case 'm':
+			this->msg = "Matrix multiple Matrix error.";
+			break;
+		case 'S'://S
+		case 's':
+			this->msg = "No a square Matrix error.";
+			break;
+		case 'L':
+		case 'l':
+			this->msg = "Unable to do LU decomposition error.";
+			break;
+		case 'I':
+		case 'i':
+			this->msg = "Determinant is zero error.";
+			break;
+		default:
+			this->msg = "Error";
+
+		}
+	};
 	void log() {
 		std::cout << msg << std::endl;
 	};
 
 private:
-	char *msg;
+	std::string msg;
+	std::string department;
 };
 
 class Matrix
@@ -44,7 +78,7 @@ public:
 	//complex
 	std::vector<Matrix> LU() throw (MatrixException);
 	double cofactor(int m, int n);
-	Matrix adjoint();
+	Matrix adjoint() throw(MatrixException);
 	Matrix inverse() throw(MatrixException);
 	Matrix gauss();//高斯消去法
 	double Det_Gauss();
