@@ -132,6 +132,37 @@ Vector Vector::Projection(Vector A, Vector B)
 	return ((A * A) / (B * B)) * B;
 }
 
+Matrix Vector::parsetoMatrix(std::vector<Vector> Vectors, char type='R') throw (VectorException)
+{
+	int SizeofVector = Vectors[0].Size;
+	for (int i = 1; i < Vectors.size(); i++) {
+		if (SizeofVector != Vectors[i].Size) throw VectorException();
+	}
+	if (type == 'R') {
+		std::vector<std::vector<double> > tmp(Vectors.size(), std::vector<double>(SizeofVector));
+		for (int i = 0; i < Vectors.size(); i++) {
+			for (int j = 0; j < SizeofVector; j++) {
+				tmp[i][j] = Vectors[i].data[j];
+			}
+		}
+		return Matrix(Vectors.size(), SizeofVector, tmp);
+	}
+	else if (type == 'C') {
+		std::vector<std::vector<double> > tmp(SizeofVector, std::vector<double>(Vectors.size()));
+		for (int i = 0; i < Vectors.size(); i++) {
+			for (int j = 0; j < SizeofVector; j++) {
+				tmp[j][i] = Vectors[i].data[j];
+			}
+		}
+		return Matrix(SizeofVector, Vectors.size(), tmp);
+	}
+	else {
+		throw VectorException();
+	}
+}
+
+
+
 
 
 

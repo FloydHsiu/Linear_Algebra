@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include "matrix.h"
 
 class VectorException
 {
@@ -41,6 +42,9 @@ public:
 	//complex
 	static double Component(Vector A, Vector B) throw(VectorException);
 	static Vector Projection(Vector A, Vector B);
+
+	//With matrix
+	static Matrix parsetoMatrix(std::vector<Vector> Vectors, char type) throw (VectorException);
 
 private:
 	std::vector<double> data;
