@@ -132,6 +132,15 @@ Vector Vector::Projection(Vector A, Vector B)
 	return ((A * A) / (B * B)) * B;
 }
 
+Vector Vector::Cross(Vector A, Vector B)
+{
+	std::vector<double> tmp(3);
+	tmp[0] = A.data[1] * B.data[2] - B.data[1] * A.data[2];
+	tmp[1] = A.data[2] * B.data[0] - A.data[0] * B.data[2];
+	tmp[2] = A.data[0] * B.data[1] - A.data[1] * B.data[0];
+	return Vector(3, tmp);
+}
+
 Matrix Vector::parsetoMatrix(std::vector<Vector> Vectors, char type='R') throw (VectorException)
 {
 	int SizeofVector = Vectors[0].Size;

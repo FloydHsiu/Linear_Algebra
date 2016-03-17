@@ -10,11 +10,12 @@
 
 int main() {
 	DataManager dataManager;
-	dataManager.SetFileName("C:/Users/Floyd/Documents/Visual Studio 2015/Projects/Project1/TestData/Matrix/M11.txt");
+	dataManager.SetFileName("C:/Users/Floyd/Documents/Visual Studio 2015/Projects/Project1/TestData/Vector/v7.txt");
 	//dataManager.SetFileName("/Users/Floyd/Downloads/project1/TestData/Matrix");
 	dataManager.LoadData();
-	Matrix::LeastSquare(dataManager.GetMatrix(0), dataManager.GetMatrix(1)).show();
-	Matrix::LeastSquare(dataManager.GetMatrix(2), dataManager.GetMatrix(3)).show();
+	Vector::Cross(dataManager.GetVector(0), dataManager.GetVector(1)).show();
+	Vector::Cross(dataManager.GetVector(2), dataManager.GetVector(3)).show();
+	Vector::Cross(dataManager.GetVector(4), dataManager.GetVector(5)).show();
 	/*int m = 0;
 	Matrix tmp = dataManager.GetMatrix(1);
 	for (int i = 0; i < m; i++) {
