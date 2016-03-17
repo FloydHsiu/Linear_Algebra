@@ -127,4 +127,11 @@ double Vector::Component(Vector A, Vector B) throw (VectorException)
 	return (A * B) / B.length();
 }
 
+Vector Vector::Projection(Vector A, Vector B)
+{
+	return ((A * A) / (B * B)) * B;
+}
+
+
+
 
