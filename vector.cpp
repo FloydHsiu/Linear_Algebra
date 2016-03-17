@@ -4,23 +4,23 @@
 
 Vector::Vector()
 {
-	this->_m = 0;
+	this->Size = 0;
 }
 
 Vector::Vector(int len, std::vector<double> vtr_data)
 {
-	this->_m = len;
+	this->Size = len;
 	this->data.assign(vtr_data.begin(), vtr_data.end());
 }
 
 int Vector::get_m()
 {
-	return this->_m;
+	return this->Size;
 }
 
 double Vector::get_data(int m)  throw (VectorException)
 {
-	if (m >= this->_m) {
+	if (m >= this->Size) {
 		throw VectorException();
 	}
 	return this->data[m];
@@ -28,13 +28,13 @@ double Vector::get_data(int m)  throw (VectorException)
 
 void Vector::setData(int len, std::vector<double> vtr_data)
 {
-	this->_m = len;
+	this->Size = len;
 	this->data.assign(vtr_data.begin(), vtr_data.end());
 }
 
 void Vector::show()
 {
-	for (int i = 0; i < this->_m; i++) {
+	for (int i = 0; i < this->Size; i++) {
 		std::cout << this->data[i] << " ";
 	}
 	std::cout << std::endl;
@@ -42,23 +42,23 @@ void Vector::show()
 
 Vector Vector::operator+(Vector vtr) throw(VectorException)
 {
-	if (this->_m != vtr._m) {
+	if (this->Size != vtr.Size) {
 		throw VectorException();
 	}
-	std::vector<double> temp(_m);
-	for (int i = 0; i < this->_m; i++) {
+	std::vector<double> temp(Size);
+	for (int i = 0; i < this->Size; i++) {
 		temp[i] = this->data[i] + vtr.data[i];
 	}
-	return Vector(this->_m, temp);
+	return Vector(this->Size, temp);
 }
 
 double Vector::operator*(Vector vtr) throw(VectorException)
 {
-	if (this->_m != vtr._m) {
+	if (this->Size != vtr.Size) {
 		throw VectorException();
 	}
 	double result = 0;
-	for (int i = 0; i < this->_m; i++) {
+	for (int i = 0; i < this->Size; i++) {
 		result += this->data[i] * vtr.data[i];
 	}
 	return result;
@@ -66,20 +66,20 @@ double Vector::operator*(Vector vtr) throw(VectorException)
 
 Vector Vector::operator*(double constant)
 {
-	std::vector<double> temp(this->_m);
-	for (int i = 0; i < this->_m; i++) {
+	std::vector<double> temp(this->Size);
+	for (int i = 0; i < this->Size; i++) {
 		temp[i] = this->data[i] * constant;
 	}
-	return Vector(this->_m, temp);
+	return Vector(this->Size, temp);
 }
 
 Vector operator*(double constant, Vector vtr)
 {
-	std::vector<double> temp(vtr._m);
-	for (int i = 0; i < vtr._m; i++) {
+	std::vector<double> temp(vtr.Size);
+	for (int i = 0; i < vtr.Size; i++) {
 		temp[i] = vtr.data[i] * constant;
 	}
-	return Vector(vtr._m, temp);
+	return Vector(vtr.Size, temp);
 }
 
 double Vector::length()
@@ -108,7 +108,7 @@ double Vector::area(Vector & vtr) throw(VectorException)
 
 bool Vector::isParallel(Vector & vtr) throw (VectorException)
 {
-	if (this->_m != vtr._m) {
+	if (this->Size != vtr.Size) {
 		throw VectorException();
 	}
 	if (this->angle(vtr) < 1e-6) return true;
@@ -119,6 +119,12 @@ bool Vector::isOrthogonal(Vector & vtr) throw(VectorException)
 {
 	if ((*this) * vtr < 1e-6) return true;
 	else return false;
+}
+
+double Vector::Component(Vector A, Vector B) throw (VectorException)
+{
+	if (A.Size != B.Size) throw VectorException();
+	return (A * B) / B.length();
 }
 
 

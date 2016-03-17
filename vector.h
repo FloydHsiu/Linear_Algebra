@@ -38,8 +38,11 @@ public:
 	double area(Vector&vtr) throw(VectorException);
 	bool isParallel(Vector &vtr) throw (VectorException);
 	bool isOrthogonal(Vector &vtr) throw (VectorException);
+	//complex
+	static double Component(Vector A, Vector B) throw(VectorException);
+	static Vector Projection(Vector A, Vector B);
 
 private:
 	std::vector<double> data;
-	int _m;
+	int Size;
 };
