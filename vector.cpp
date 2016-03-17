@@ -141,7 +141,14 @@ Vector Vector::Cross(Vector A, Vector B)
 	return Vector(3, tmp);
 }
 
-Matrix Vector::parsetoMatrix(std::vector<Vector> Vectors, char type='R') throw (VectorException)
+bool Vector::isLinearIndependent(std::vector<Vector> Vectors) throw (VectorException)
+{
+	Matrix tmp = parsetoMatrix(Vectors, 'R');
+	if (std::abs(tmp.Det_Gauss()) < 1e-8) return false;
+	else return true;
+}
+
+Matrix Vector::parsetoMatrix(std::vector<Vector> Vectors, char type) throw (VectorException)
 {
 	int SizeofVector = Vectors[0].Size;
 	for (int i = 1; i < Vectors.size(); i++) {
