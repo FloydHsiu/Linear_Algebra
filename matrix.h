@@ -89,8 +89,8 @@ public:
 	static Matrix LeastSquare(Matrix A, Matrix B) throw (MatrixException);//tanspose(A)AX = tanspose(A)B  --> X = inverse(tansepose(A)A)transpose(A)B 
 
 private:
-	int RowIndex;
-	int ColumnIndex;
+	int RowSize;
+	int ColumnSize;
 	std::vector<std::vector<double> > data;
 	static double DetRecursive(Matrix &mtx);
 	static double DetRecursive(int m, int n, double *data);
