@@ -9,7 +9,7 @@ Handle the input file by DataManager Class</br>
 - call SetFileName(Filename) insert the file address
 - call LoadData()
 
-####Standard input type
+**Standard input type**
 > 1 (Number of Matrix or Vector waiting to be read)</br>
 > M (Type of input)</br>
 > 3 3 (Size of the input)</br>
