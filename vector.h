@@ -29,6 +29,7 @@ public:
 	void show();
 	//operator overloading
 	Vector operator+(Vector vtr) throw (VectorException);
+	Vector operator-(Vector vtr) throw (VectorException);
 	double operator*(Vector vtr) throw (VectorException);
 	Vector operator*(double constant);
 	friend Vector operator*(double constant, Vector vtr);
@@ -45,7 +46,7 @@ public:
 	static Vector Cross(Vector A, Vector B);
 	static bool isLinearIndependent(std::vector<Vector>Vectors) throw (VectorException);
 	static Vector PlaneNormal(Vector A, Vector B);
-	static Matrix OrthogonalBasis(std::vector<Vector> Vectors);
+	static std::vector<Vector> OrthogonalBasis(std::vector<Vector> Vectors) throw(VectorException);
 
 	//With matrix
 	static Matrix parsetoMatrix(std::vector<Vector> Vectors, char type) throw (VectorException);

@@ -52,6 +52,18 @@ Vector Vector::operator+(Vector vtr) throw(VectorException)
 	return Vector(this->Size, temp);
 }
 
+Vector Vector::operator-(Vector vtr) throw(VectorException)
+{
+	if (this->Size != vtr.Size) {
+		throw VectorException();
+	}
+	std::vector<double> temp(Size);
+	for (int i = 0; i < this->Size; i++) {
+		temp[i] = this->data[i] - vtr.data[i];
+	}
+	return Vector(this->Size, temp);
+}
+
 double Vector::operator*(Vector vtr) throw(VectorException)
 {
 	if (this->Size != vtr.Size) {
@@ -151,6 +163,25 @@ bool Vector::isLinearIndependent(std::vector<Vector> Vectors) throw (VectorExcep
 Vector Vector::PlaneNormal(Vector A, Vector B)
 {
 	return Cross(A, B);
+}
+
+std::vector<Vector> Vector::OrthogonalBasis(std::vector<Vector> Vectors) throw (VectorException)
+{
+	int SizeofVector = Vectors[0].Size;
+	int VectorsSize = Vectors.size();
+	if (VectorsSize > Vectors[0].Size) throw VectorException();
+	for (int i = 1; i < VectorsSize; i++) {
+		if (SizeofVector != Vectors[i].Size) throw VectorException();
+	}
+	std::vector<Vector> orthogonalbasis;
+	for (int i = 0; i < VectorsSize; i++) {
+		Vector v = Vectors[i];
+		for (int j = 0; j < i; j++) {
+			v = v - ((Vectors[i] * orthogonalbasis[j]) / (orthogonalbasis[j] * orthogonalbasis[j]))*orthogonalbasis[j];
+		}
+		orthogonalbasis.push_back(v.normalization());
+	}
+	return orthogonalbasis;
 }
 
 Matrix Vector::parsetoMatrix(std::vector<Vector> Vectors, char type) throw (VectorException)
