@@ -44,6 +44,8 @@ public:
 	static Vector Projection(Vector A, Vector B);
 	static Vector Cross(Vector A, Vector B);
 	static bool isLinearIndependent(std::vector<Vector>Vectors) throw (VectorException);
+	static Vector PlaneNormal(Vector A, Vector B);
+	static Matrix OrthogonalBasis(std::vector<Vector> Vectors);
 
 	//With matrix
 	static Matrix parsetoMatrix(std::vector<Vector> Vectors, char type) throw (VectorException);

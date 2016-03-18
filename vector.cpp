@@ -148,6 +148,11 @@ bool Vector::isLinearIndependent(std::vector<Vector> Vectors) throw (VectorExcep
 	else return true;
 }
 
+Vector Vector::PlaneNormal(Vector A, Vector B)
+{
+	return Cross(A, B);
+}
+
 Matrix Vector::parsetoMatrix(std::vector<Vector> Vectors, char type) throw (VectorException)
 {
 	int SizeofVector = Vectors[0].Size;

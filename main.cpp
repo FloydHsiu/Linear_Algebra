@@ -10,14 +10,11 @@
 
 int main() {
 	DataManager dataManager;
-	dataManager.SetFileName("C:/Users/Floyd/Documents/Visual Studio 2015/Projects/Project1/TestData/Vector/v7.txt");
+	dataManager.SetFileName("C:/Users/Floyd/Documents/Visual Studio 2015/Projects/Project1/TestData/Vector/V14.txt");
 	//dataManager.SetFileName("/Users/Floyd/Downloads/project1/TestData/Matrix");
 	dataManager.LoadData();
-	std::vector<Vector> tmp;
-	tmp.push_back(dataManager.GetVector(0));
-	tmp.push_back(dataManager.GetVector(1));
-	tmp.push_back(dataManager.GetVector(2));
-	std::cout << Vector::isLinearIndependent(tmp);
+	Vector::Cross(dataManager.GetVector(0), dataManager.GetVector(1)).show();
+	Vector::Cross(dataManager.GetVector(2), dataManager.GetVector(3)).show();
 	/*int m = 0;
 	Matrix tmp = dataManager.GetMatrix(1);
 	for (int i = 0; i < m; i++) {
